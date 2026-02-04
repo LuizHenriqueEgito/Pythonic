@@ -1,0 +1,11 @@
+[package]
+name = "prime_numbers_rs"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+pyo3 = {version="0.21", features=["extension-module"]}
+
+[lib]
+name = "prime_numbers_rs"  # Deve ser o mesmo nome do seu cargo init ___
+crate-type = ["cdylib"]  # TODO: Pra que serve esse cara?

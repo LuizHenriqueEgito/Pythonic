@@ -58,11 +58,16 @@ def run_multiprocess(list_numbers: list[int]) -> list[int]:
     return [num for sublist in results for num in sublist]
 
 if __name__ == '__main__':
-    N = 10_000_000
+    N = 5_000_000
     LIST_NUMBERS = [x for x in range(N)]
     print('Sem multiprocess')
+    # Para 5MM levou 107.5s
     list_primes = run(list_numbers=LIST_NUMBERS)
     print(len(list_primes))
     print('Com multiprocess e 5 núcloes')
+    # Para 5MM levou 22.63s
     list_primes_multiprocess = run_multiprocess(list_numbers=LIST_NUMBERS)
     print(len((list_primes_multiprocess)))
+    # Foi 4.75x mais rápido
+    # com Rust isso demora 4.55 segundos
+    # Foi aproximadamente 5x mais rapido (~4.97x)

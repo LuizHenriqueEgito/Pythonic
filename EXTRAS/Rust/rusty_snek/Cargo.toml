@@ -1,0 +1,11 @@
+[package]
+name = "rusty_snek"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+pyo3 = {version="0.21", features=["extension-module"]}
+
+[lib]
+name = "rusty_snek"  # Deve ser o mesmo nome do seu cargo init ___
+crate-type = ["cdylib"]  # TODO: Pra que serve esse cara?
