@@ -1,13 +1,15 @@
 import time
-from prime_numbers_rs import is_prime_rust
+from prime_numbers_fn import parallel_worker
 
-# esse código em python demora muito, mas muito mais do que aqui
-start = time.perf_counter()
-list_primes = is_prime_rust(5_000_000)
-elapsed = time.perf_counter() - start
-print(len(list_primes))
-print(f"Tempo: {elapsed:.3f} segundos")
-N = 50
-list_ = [x for x in range(N)]
-f = [num for num, cond in zip(list_, list_primes) if cond]
-print(f)
+if __name__ == '__main__':
+    # para meio bilhão demorou cerca de 11 minutos
+    N = 500_000_000  # isso não rodaria nunca em python puro
+    numbers_list = list(range(N))
+
+    start_parallel = time.time()
+    primes = parallel_worker(numbers_list)
+    time_parallel = time.time() - start_parallel
+    print(f'Tempo gasto: {time_parallel}')
+    print(f'Primeiros 10 itens: {primes[:10]}')
+    print(f'Últimos 10 itens: {primes[-10:]}')
+    print(f'Tempo utilizado: {time_parallel:.2f}')

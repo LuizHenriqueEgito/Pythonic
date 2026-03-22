@@ -1,40 +1,44 @@
+use rayon::prelude::*;
 use pyo3::prelude::*;
+use pyo3::wrap_pyfunction;
 
 #[pyfunction]
-fn is_prime_rust(n: usize) -> Vec<bool> {
-    let mut result = Vec::with_capacity(n);
-
-    for x in 0..n {
-        if x < 2 {
-            result.push(false);
-            continue;
-        }
-        if x == 2 || x == 3 {
-            result.push(true);
-            continue;
-        }
-        if x % 2 == 0 || x % 3 == 0 {
-            result.push(false);
-            continue;
-        }
-        let limit = (x as f64).sqrt() as usize + 1;
-        let mut is_prime = true;
-
-        let mut i = 5;
-        while i < limit {
-            if x % i == 0 || x % (i + 2) == 0 {
-                is_prime = false;
-                break;
-            }
-            i += 6;
-        }
-        result.push(is_prime);
+fn is_prime(n: u64) -> bool {
+    if n < 2 {
+        return false;
     }
-    result
+    if n == 2 {
+        return true;
+    }
+    if n % 2 == 0 {
+        return false;
+    }
+
+    let limit = (n as f64).sqrt() as u64;
+
+    let mut i = 3;
+    while i <= limit {
+        if n % i == 0 {
+            return false;
+        }
+        i += 2;
+    }
+
+    true
+}
+
+#[pyfunction]
+fn parallel_worker(numbers: Vec<u64>) -> Vec<u64> {
+    numbers
+        .par_iter()
+        .cloned()
+        .filter(|&n| is_prime(n))
+        .collect()
 }
 
 #[pymodule]
-fn prime_numbers_rs(m: &Bound<'_, PyModule>) -> PyResult<()> {
-    m.add_function(wrap_pyfunction!(is_prime_rust, m)?)?;
+fn prime_numbers_fn(m: &PyModule) -> PyResult<()> {
+    m.add_function(wrap_pyfunction!(parallel_worker, m)?)?;
+    m.add_function(wrap_pyfunction!(is_prime, m)?)?;
     Ok(())
 }
