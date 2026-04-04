@@ -1,7 +1,7 @@
 from multiprocessing import Process, Value
 import time
 
-
+# Value: Cria uma memória compartilhada que ambos os processos podem acessar
 def worker(contador):
     for _ in range(5):
         time.sleep(1)
@@ -10,6 +10,7 @@ def worker(contador):
 
 
 def main():
+    # Criando um contador compartilhado (com Value)
     contador = Value('i', 0)
 
     p = Process(target=worker, args=(contador,))
