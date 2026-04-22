@@ -1,6 +1,5 @@
 # futures: É um jeito mais simples e organizado de se usar process
 # se parece com Pool
-# TODO: Entenda como funciona o submit
 from concurrent.futures import ProcessPoolExecutor
 
 def worker(x):

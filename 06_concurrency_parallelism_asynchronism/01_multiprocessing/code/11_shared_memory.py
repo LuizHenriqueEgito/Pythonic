@@ -1,5 +1,5 @@
-# TODO: Entenda melhor o que está acontecendo
 # ele acessa a memoria compartilhada apenas pelo nome?
+# Sim quando nos passamos como argumento para a função worker
 from multiprocessing import Process
 from multiprocessing import shared_memory
 import numpy as np
@@ -17,9 +17,11 @@ def main() -> None:
     data = np.array([1, 2, 3, 4, 5], dtype=np.int64)
 
     # cria memória compartilhada
+    # size é o tamanho em bytes
     shm = shared_memory.SharedMemory(create=True, size=data.nbytes)
 
     # copia dados para memória
+    # e essa memoria é a memória compartilhada
     shared_array = np.ndarray(data.shape, dtype=data.dtype, buffer=shm.buf)
     shared_array[:] = data[:]
 
